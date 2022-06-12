@@ -10,15 +10,20 @@ from discord.utils import get
 from discord.ext.commands import MemberNotFound
 from discord.ext.commands import MissingPermissions
 from decouple import config
+import cogs.statusrewards.statusmain as statusmain
 
-client = commands.Bot(command_prefix="sr_", intents=discord.Intents.all(), case_insensitive=True)
+intents = discord.Intents().all()
+client = commands.Bot(intents=intents)
 client.remove_command('help')
+
 
 @client.event
 async def on_ready():
     print("Bot is online")
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Status Boosters"), status=discord.Status.online)
     client.start_time = datetime.now()
+    statussnd = statusmain.statusmain(client)
+    statussnd.check_roles.start()
 
 @client.event
 async def on_command_error(ctx, error):
@@ -62,5 +67,6 @@ for directory in os.listdir('./cogs'):
 if __name__ == '__main__':
     for extension in initial_extensions:
         client.load_extension(extension)
+
 
 client.run(config('TOKEN'))
