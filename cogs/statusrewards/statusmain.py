@@ -1,4 +1,4 @@
-from typing_extensions import Self
+
 import discord
 from discord.ext import commands, tasks
 from datetime import datetime
