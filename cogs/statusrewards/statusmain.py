@@ -1,12 +1,8 @@
 from typing_extensions import Self
-from cv2 import add
 import discord
 from discord.ext import commands, tasks
 from datetime import datetime
-from decouple import config
-from discord import Embed, slash_command
 import json
-import time
 
 rolelist = [953778432813187123, 632674518317531137]
 statrole = 953783248503308289

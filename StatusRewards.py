@@ -6,7 +6,6 @@ from discord.ext import commands
 from datetime import datetime
 from discord.ext.commands import CommandNotFound
 import os
-from discord.utils import get
 from discord.ext.commands import MemberNotFound
 from discord.ext.commands import MissingPermissions
 from decouple import config
