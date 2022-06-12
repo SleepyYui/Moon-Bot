@@ -1,2 +1,13 @@
 py-cord==2.0.0b7
 python-decouple==3.6
+git+https://github.com/Gorialis/jishaku@master
+python-dotenv
+pymongo
+motor
+asyncio
+dnspython
+humanfriendly
+pygit2
+hikari
+uvloop
+aiohttp_cors
