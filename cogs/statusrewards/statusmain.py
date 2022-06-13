@@ -5,8 +5,8 @@ from datetime import datetime
 import json
 
 rolelist = [953778432813187123, 632674518317531137]
-statrole = 953783248503308289
-guildid = 953778083041800293
+statrole = 985629790327423027
+guildid = 903713782650527744
 
 class statusmain(commands.Cog):
 
@@ -31,8 +31,8 @@ class statusmain(commands.Cog):
     @tasks.loop(seconds=1800)
     async def check_roles(self):
         boosters = self.get_booster()
-        guild = self.client.get_guild(953778083041800293)
-        role = guild.get_role(953783248503308289)
+        guild = self.client.get_guild(903713782650527744)
+        role = guild.get_role(985629790327423027)
         for user in boosters:
             user = guild.get_member(user)
             status = self.get_status(user)
@@ -43,7 +43,7 @@ class statusmain(commands.Cog):
                 await user.remove_roles(role)
         print(f"Checked roles at {datetime.now()}")
 
-    @commands.slash_command(name="check_status", description="Überprüfe ob ein user \"discord.gg/moonfamily\" im Status hat.")
+    @commands.slash_command(name="check_status", description="Überprüfe, ob ein User \"discord.gg/moonfamily\" im Status hat.")
     async def checksbooster(self, ctx, member : discord.Member = None):
         if member is None:
             member = ctx.author
@@ -54,14 +54,14 @@ class statusmain(commands.Cog):
         role = guild.get_role(statrole)
         if check == "True":
             await member.add_roles(role)
-            await ctx.respond(f"{member.name} ist ein Status-Booster")
+            await ctx.respond(f"{member.name} ist ein Status-Booster.")
         elif check == "False":
             await member.remove_roles(role)
-            await ctx.respond(f"{member.name} ist kein Status-Booster")
+            await ctx.respond(f"{member.name} ist kein Status-Booster.")
         elif check == "None":
-            await ctx.respond(f"{member.name} hat keinen / nicht den richtigen Status")
+            await ctx.respond(f"{member.name} hat keinen / nicht den richtigen Status.")
         elif check == "Yes":
-            await ctx.respond(f"{member.name} ist ein Status-Booster")
+            await ctx.respond(f"{member.name} ist ein Status-Booster.")
 
     def get_status(self, user):
         try:

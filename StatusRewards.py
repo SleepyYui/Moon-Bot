@@ -9,8 +9,7 @@ import os
 from discord.ext.commands import MemberNotFound
 from discord.ext.commands import MissingPermissions
 from decouple import config
-import cogs.status.statusmain as statusmain
-from utils.database import Database
+import cogs.statusrewards.statusmain as statusmain
 
 intents = discord.Intents().all()
 client = commands.Bot(intents=intents)
@@ -19,19 +18,11 @@ client.remove_command('help')
 
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Status Boosters"), status=discord.Status.online)
+    print("Bot is online")
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="auf deinen Status"), status=discord.Status.online)
     client.start_time = datetime.now()
     statussnd = statusmain.statusmain(client)
     statussnd.check_roles.start()
-    print("Bot is online")
-    print(f"Logged in as {client.user}")
-    print(f"Connected to: {len(client.guilds)} guilds")
-    print(f"Connected to: {len(client.users)} users")
-    print(f"Connected to: {len(client.cogs)} cogs")
-    print(f"Connected to: {len(client.commands)} commands")
-    print(f"Connected to: {len(client.emojis)} emojis")
-    print(f"Connected to: {len(client.voice_clients)} voice clients")
-    print(f"Connected to: {len(client.private_channels)} private_channels")
 
 @client.event
 async def on_command_error(ctx, error):
@@ -75,9 +66,6 @@ for directory in os.listdir('./cogs'):
 if __name__ == '__main__':
     for extension in initial_extensions:
         client.load_extension(extension)
-    client.mongo = Database(os.getenv('DATABASE_LINK'))
-    client.add_check(client.blacklist_check)
-    client.add_listener(client.connect_listener, 'on_connect')
 
 
 client.run(config('TOKEN'))
