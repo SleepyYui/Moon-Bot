@@ -3,10 +3,11 @@ import discord
 from discord.ext import commands, tasks
 from datetime import datetime
 import json
+from decouple import config
 
 rolelist = [953778432813187123, 632674518317531137]
-statrole = 953783248503308289
-guildid = 953778083041800293
+statrole = int(config('SROLE'))
+guildid = int(config('SGUILD'))
 
 class statusmain(commands.Cog):
 
@@ -48,8 +49,8 @@ class statusmain(commands.Cog):
     @tasks.loop(hours=12)
     async def check_roles(self):
         boosters = self.get_booster()
-        guild = self.client.get_guild(953778083041800293)
-        role = guild.get_role(953783248503308289)
+        guild = self.client.get_guild(int(config('SGUILD')))
+        role = guild.get_role(int(config('SROLE')))
         for user in boosters:
             user = guild.get_member(user)
             status = self.get_status(user)

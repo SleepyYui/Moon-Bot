@@ -9,7 +9,7 @@ import os
 from discord.ext.commands import MemberNotFound
 from discord.ext.commands import MissingPermissions
 from decouple import config
-import cogs.statusrewards.statusmain as statusmain
+import cogs.status_rewards.statusmain as statusmain
 
 intents = discord.Intents().all()
 client = commands.Bot(intents=intents)
@@ -26,31 +26,40 @@ async def on_ready():
 
 @client.event
 async def on_command_error(ctx, error):
+
+    send_help = (commands.MissingRequiredArgument, commands.BadArgument, commands.TooManyArguments, commands.UserInputError)
+
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(f'This command is on cooldown, you can use it in {round(error.retry_after, 2)}')
-
-
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, CommandNotFound):
+        await ctx.send(f'Dieser Command ist im Cooldown bis in {round(error.retry_after, 2)} Sekunden')
+    elif isinstance(error, CommandNotFound):
         return
-
-    if isinstance(error, MemberNotFound):
-        await ctx.send("Can't find this member", delete_after=10)
+    elif isinstance(error, MemberNotFound):
+        await ctx.send("Dieses Mitglied existiert nicht")
         return
-
-    if isinstance(error, MissingPermissions):
-        await ctx.send("I don't have the permissions to do this", delete_after=10)
+    elif isinstance(error, send_help):
+        await ctx.send(f"Hey! Du hast einen Fehler gemacht.\n{error}", delete_after=10)
         return
-    raise error
+    else:
+        try:
+            channel = client.get_channel(int(config('LOGS')))
+        except:
+            channel = client.get_channel(int(config('LOGS')))
+        await channel.send(f"A command_error occured:\n{error}")
+        return
 
 
 @client.event
 async def on_application_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.respond(error)
+        return
     else:
-        raise error
+        try:
+            channel = client.get_channel(int(config('LOGS')))
+        except:
+            channel = client.get_channel(int(config('LOGS')))
+        await channel.send(f"A application_command_error occured:\n{error}")
+        return
 
 initial_extensions = []
 for directory in os.listdir('./cogs'):
