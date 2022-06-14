@@ -5,8 +5,8 @@ from datetime import datetime
 import json
 
 rolelist = [953778432813187123, 632674518317531137]
-statrole = 985629790327423027
-guildid = 903713782650527744
+statrole = 953783248503308289
+guildid = 953778083041800293
 
 class statusmain(commands.Cog):
 
@@ -19,29 +19,51 @@ class statusmain(commands.Cog):
         member = guild.get_member(before.id)
         cstatus = self.get_status(member)
         rstatus = self.check_status(member, cstatus)
-        if rstatus == True:
+        #print("E")
+        if rstatus == "Yes" or rstatus == "True":
             role = guild.get_role(statrole)
             await member.add_roles(role)
-        elif rstatus == False:
+        elif rstatus == "False":
             role = guild.get_role(statrole)
             await member.remove_roles(role)
         else:
             return
 
-    @tasks.loop(seconds=1800)
+    @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+        guild = self.client.get_guild(guildid)
+        member = guild.get_member(before.id)
+        cstatus = self.get_status(member)
+        rstatus = self.check_status(member, cstatus)
+        #print("E")
+        if rstatus == "Yes" or rstatus == "True":
+            role = guild.get_role(statrole)
+            await member.add_roles(role)
+        elif rstatus == "False":
+            role = guild.get_role(statrole)
+            await member.remove_roles(role)
+        else:
+            return
+
+    @tasks.loop(hours=12)
     async def check_roles(self):
         boosters = self.get_booster()
-        guild = self.client.get_guild(903713782650527744)
-        role = guild.get_role(985629790327423027)
+        guild = self.client.get_guild(953778083041800293)
+        role = guild.get_role(953783248503308289)
         for user in boosters:
             user = guild.get_member(user)
             status = self.get_status(user)
             if status != None:
+                print(status)
                 if ".gg/moonfamily" not in status.lower():
                     await user.remove_roles(role)
             else:
                 await user.remove_roles(role)
         print(f"Checked roles at {datetime.now()}")
+
+    @tasks.loop(seconds=1800)
+    async def check_offline_roles(self):
+        obooster = self.get_obooster()
 
     @commands.slash_command(name="check_status", description="Überprüfe, ob ein User \"discord.gg/moonfamily\" im Status hat.")
     async def checksbooster(self, ctx, member : discord.Member = None):
@@ -109,6 +131,20 @@ class statusmain(commands.Cog):
             boosters = json.load(f)
         boosters.remove(booster)
         with open('status_boosters.json', 'w') as f:
+            json.dump(boosters, f)
+
+    def add_obooster(self, booster):
+        with open('status_oboosters.json', 'r') as f:
+            boosters = json.load(f)
+        boosters.append(booster)
+        with open('status_oboosters.json', 'w') as f:
+            json.dump(boosters, f)
+
+    def remove_obooster(self, booster):
+        with open('status_oboosters.json', 'r') as f:
+            boosters = json.load(f)
+        boosters.remove(booster)
+        with open('status_oboosters.json', 'w') as f:
             json.dump(boosters, f)
 
 def setup(client):
