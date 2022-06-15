@@ -14,7 +14,7 @@ class statusmain(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.Cog.listener()
+    """@commands.Cog.listener()
     async def on_member_update(self, before, after):
         guild = self.client.get_guild(guildid)
         member = guild.get_member(before.id)
@@ -28,7 +28,7 @@ class statusmain(commands.Cog):
             role = guild.get_role(statrole)
             await member.remove_roles(role)
         else:
-            return
+            return"""
 
     @commands.Cog.listener()
     async def on_presence_update(self, before, after):
