@@ -19,7 +19,7 @@ client.remove_command('help')
 @client.event
 async def on_ready():
     print("Bot is online")
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="auf deinen Status"), status=discord.Status.online)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="in meine DMs"), status=discord.Status.online)
     client.start_time = datetime.now()
     statussnd = statusmain.statusmain(client)
     statussnd.check_roles.start()

@@ -266,7 +266,7 @@ class Thread {
       );
 
       if (config.errorOnUnknownInlineSnippet && unknownSnippets.size > 0) {
-        this.postSystemMessage(`The following snippets used in the reply do not exist:\n${Array.from(unknownSnippets).join(", ")}`);
+        this.postSystemMessage(`Die filgenden Snippets existieren nicht:\n${Array.from(unknownSnippets).join(", ")}`);
         return false;
       }
     }
@@ -319,7 +319,7 @@ class Thread {
     // Because moderator replies have to be editable, we enforce them to fit within 1 message
     if (! utils.messageContentIsWithinMaxLength(dmContent) || ! utils.messageContentIsWithinMaxLength(inboxContent)) {
       await this._deleteThreadMessage(threadMessage.id);
-      await this.postSystemMessage("Reply is too long! Make sure your reply is under 2000 characters total, moderator name in the reply included.");
+      await this.postSystemMessage("Antwort zu lang! Stelle sicher, dass die Antwort unter 2000 zeichen hat, name des Moderators mit eingeschlossen.");
       return false;
     }
 
@@ -329,7 +329,7 @@ class Thread {
       dmMessage = await this._sendDMToUser(dmContent, files);
     } catch (e) {
       await this._deleteThreadMessage(threadMessage.id);
-      await this.postSystemMessage(`Error while replying to user: ${e.message}`);
+      await this.postSystemMessage(`Error beim antworten: ${e.message}`);
       return false;
     }
 
@@ -351,7 +351,7 @@ class Thread {
     // Interrupt scheduled closing, if in progress
     if (this.scheduled_close_at) {
       await this.cancelScheduledClose();
-      await this.postSystemMessage("Cancelling scheduled closing of this thread due to new reply");
+      await this.postSystemMessage("Die geplante Schließung dieses Threads wird aufgrund einer neuen Antwort abgebrochen");
     }
 
     // If enabled, set up a reply alert for the moderator after a slight delay
@@ -439,13 +439,13 @@ class Thread {
         activityText = "do something";
       }
 
-      messageContent += `\n\n*<This message contains an invite to ${activityText} on ${applicationName}>*`;
+      messageContent += `\n\n*<Diese Nachricht beinhaltet eine Einladung zu ${activityText} auf ${applicationName}>*`;
       messageContent = messageContent.trim();
     }
 
     if (msg.stickers && msg.stickers.length) {
       const stickerLines = msg.stickers.map(sticker => {
-        return `*<Message contains sticker "${sticker.name}">*`;
+        return `*<Nachricht enthält folgenden Sticker: "${sticker.name}">*`;
       });
 
       messageContent += "\n\n" + stickerLines.join("\n");
@@ -496,7 +496,7 @@ class Thread {
     // Interrupt scheduled closing, if in progress
     if (this.scheduled_close_at) {
       await this.cancelScheduledClose();
-      await this.postSystemMessage(`<@!${this.scheduled_close_id}> Thread that was scheduled to be closed got a new reply. Cancelling.`, {
+      await this.postSystemMessage(`<@!${this.scheduled_close_id}> Thread, der geschlossen werden sollte, hat eine neue Antwort erhalten. Schließung abgebrochen.`, {
         allowedMentions: {
           users: [this.scheduled_close_id],
         },
@@ -508,7 +508,7 @@ class Thread {
       const mentionsStr = ids.map(id => `<@!${id}> `).join("");
 
       await this.deleteAlerts();
-      await this.postSystemMessage(`${mentionsStr}New message from ${this.user_name}`, {
+      await this.postSystemMessage(`${mentionsStr} Neue Nachricht von ${this.user_name}`, {
         allowedMentions: {
           users: ids,
         },
@@ -749,9 +749,9 @@ class Thread {
       console.log(`Closing thread ${this.id}`);
 
       if (silent) {
-        await this.postSystemMessage("Closing thread silently...");
+        await this.postSystemMessage("Schließe Thread leise...");
       } else {
-        await this.postSystemMessage("Closing thread...");
+        await this.postSystemMessage("Schließe Thread...");
       }
     }
 
@@ -767,7 +767,7 @@ class Thread {
     const channel = bot.getChannel(this.channel_id);
     if (channel) {
       console.log(`Deleting channel ${this.channel_id}`);
-      await channel.delete("Thread closed");
+      await channel.delete("Thread geschlossen");
     }
 
     await callAfterThreadCloseHooks({ threadId: this.id });
@@ -956,7 +956,7 @@ class Thread {
     // Same restriction as in replies. Because edits could theoretically change the number of messages a reply takes, we enforce replies
     // to fit within 1 message to avoid the headache and issues caused by that.
     if (! utils.messageContentIsWithinMaxLength(formattedDM) || ! utils.messageContentIsWithinMaxLength(formattedThreadMessage)) {
-      await this.postSystemMessage("Edited reply is too long! Make sure the edit is under 2000 characters total, moderator name in the reply included.");
+      await this.postSystemMessage("Bearbeitete Antwort ist zu lang! Stelle sicher, dass die Änderung insgesamt weniger als 2000 Zeichen umfasst und bedenke dass der Name des Moderators in der Antwort enthalten ist.");
       return false;
     }
 

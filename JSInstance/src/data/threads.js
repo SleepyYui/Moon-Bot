@@ -264,7 +264,7 @@ async function createNewThreadForUser(user, opts = {}) {
 
     // Account age
     const accountAge = humanizeDuration(Date.now() - user.createdAt, {largest: 2, round: true});
-    infoHeaderItems.push(`ACCOUNT ALTER **${accountAge}**`);
+    infoHeaderItems.push(`Account Alter: **${accountAge}**`);
 
     // User id (and mention, if enabled)
     if (config.mentionUserInThreadHeader) {
@@ -279,20 +279,20 @@ async function createNewThreadForUser(user, opts = {}) {
     for (const [guildId, guildData] of userGuildData.entries()) {
       const {nickname, joinDate} = getHeaderGuildInfo(guildData.member);
       const headerItems = [
-        `NICKNAME **${utils.escapeMarkdown(nickname)}**`,
-        `GEJOINT VOR **${joinDate}**`
+        `Nickname: **${utils.escapeMarkdown(nickname)}**`,
+        `Gejoint vor: **${joinDate}**`
       ];
 
       if (guildData.member.voiceState.channelID) {
         const voiceChannel = guildData.guild.channels.get(guildData.member.voiceState.channelID);
         if (voiceChannel) {
-          headerItems.push(`VOICE CHANNEL **${utils.escapeMarkdown(voiceChannel.name)}**`);
+          headerItems.push(`Voice Channel **${utils.escapeMarkdown(voiceChannel.name)}**`);
         }
       }
 
       if (config.rolesInThreadHeader && guildData.member.roles.length) {
         const roles = guildData.member.roles.map(roleId => guildData.guild.roles.get(roleId)).filter(Boolean);
-        headerItems.push(`ROLLEN **${roles.map(r => r.name).join(", ")}**`);
+        headerItems.push(`Rollen: **${roles.map(r => r.name).join(", ")}**`);
       }
 
       const headerStr = headerItems.join(", ");
@@ -307,7 +307,7 @@ async function createNewThreadForUser(user, opts = {}) {
     // Modmail history / previous logs
     const userLogCount = await getClosedThreadCountByUserId(user.id);
     if (userLogCount > 0) {
-      infoHeader += `\n\nDieser Benutzer hat **${userLogCount}**vorherige Modmail Threads. Benutze \`${config.prefix}logs\` um sie zu sehen.`;
+      infoHeader += `\n\nDieser Benutzer hat **${userLogCount}** vorherige Modmail Threads. Benutze \`${config.prefix}logs\` um sie zu sehen.`;
     }
 
     const userNotes = await findNotesByUserId(user.id);
