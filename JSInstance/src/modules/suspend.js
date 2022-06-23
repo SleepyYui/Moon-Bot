@@ -13,7 +13,7 @@ module.exports = ({ bot, knex, config, commands }) => {
     for (const thread of threadsToBeSuspended) {
       if (thread.status === THREAD_STATUS.OPEN) {
         await thread.suspend();
-        await thread.postSystemMessage(`**Thread suspended** as scheduled by ${thread.scheduled_suspend_name}. This thread will act as closed until unsuspended with \`!unsuspend\``);
+        await thread.postSystemMessage(`**Thread suspendiert** wie von ${thread.scheduled_suspend_name} angefordert. Dieser Thread wird sich wie geschlossen verhalten bis jemand \`=unsuspend\` benutzt.`);
       }
     }
   }
@@ -34,9 +34,9 @@ module.exports = ({ bot, knex, config, commands }) => {
     // Cancel timed suspend
     if (thread.scheduled_suspend_at) {
       await thread.cancelScheduledSuspend();
-      thread.postSystemMessage("Cancelled scheduled suspension");
+      thread.postSystemMessage("Geplantes Suspendieren abgebrochen.");
     } else {
-      thread.postSystemMessage("Thread is not scheduled to be suspended");
+      thread.postSystemMessage("Thread wurde nicht geplant suspendiert.");
     }
   });
 
@@ -49,35 +49,35 @@ module.exports = ({ bot, knex, config, commands }) => {
       const suspendAt = moment.utc().add(args.delay, "ms");
       await thread.scheduleSuspend(suspendAt.format("YYYY-MM-DD HH:mm:ss"), msg.author);
 
-      thread.postSystemMessage(`Thread will be suspended in ${utils.humanizeDelay(args.delay)}. Use \`${config.prefix}suspend cancel\` to cancel.`);
+      thread.postSystemMessage(`Thread wird suspendiert in ${utils.humanizeDelay(args.delay)}. Nutze \`${config.prefix}suspend cancel\` um den Vorgang abzubrechen.`);
 
       return;
     }
 
     await thread.suspend();
-    thread.postSystemMessage("**Thread suspended!** This thread will act as closed until unsuspended with `!unsuspend`");
+    thread.postSystemMessage("**Thread Suspemdiert!** Dieser Thread wird sich wie geschlossen verhalten bis jemand `!unsuspend` benutzt.");
   }, { allowSuspended: true });
 
   commands.addInboxServerCommand("unsuspend", [], async (msg, args, thread) => {
     if (thread) {
-      thread.postSystemMessage("Thread is not suspended");
+      thread.postSystemMessage("Thread ist nicht Suspendiert");
       return;
     }
 
     thread = await threads.findSuspendedThreadByChannelId(msg.channel.id);
     if (! thread) {
       const channel = await getOrFetchChannel(bot, msg.channel.id);
-      channel.createMessage("Not in a thread");
+      channel.createMessage("Kein Threas");
       return;
     }
 
     const otherOpenThread = await threads.findOpenThreadByUserId(thread.user_id);
     if (otherOpenThread) {
-      thread.postSystemMessage(`Cannot unsuspend; there is another open thread with this user: <#${otherOpenThread.channel_id}>`);
+      thread.postSystemMessage(`Kann nicht ent-suspendieren. Der User hat bereits einen offenen Channel: <#${otherOpenThread.channel_id}>`);
       return;
     }
 
     await thread.unsuspend();
-    thread.postSystemMessage("**Thread unsuspended!**");
+    thread.postSystemMessage("**Thread ent-suspendiert!**");
   });
 };

@@ -207,16 +207,16 @@ async function createNewThreadForUser(user, opts = {}) {
     let createdChannel;
     try {
       createdChannel = await utils.getInboxGuild().createChannel(opts.channelName, DISOCRD_CHANNEL_TYPES.GUILD_TEXT, {
-        reason: "New Modmail thread",
+        reason: "Neuer Modmail Thread",
         parentID: newThreadCategoryId,
       });
     } catch (err) {
       // Fix for disallowed channel names in servers in Server Discovery
-      if (err.message.includes("Contains words not allowed for servers in Server Discovery")) {
+      if (err.message.includes("Enthält Wörter, die für Server in der Servererkennung nicht zulässig sind")) {
         const replacedChannelName = "badname-0000";
         try {
           createdChannel = await utils.getInboxGuild().createChannel(replacedChannelName, DISOCRD_CHANNEL_TYPES.GUILD_TEXT, {
-            reason: "New Modmail thread",
+            reason: "Neuer Modmail Thread",
             parentID: newThreadCategoryId,
           });
         } catch (_err) {
@@ -253,7 +253,7 @@ async function createNewThreadForUser(user, opts = {}) {
           : utils.getInboxMentionAllowedMentions();
 
         await newThread.postNonLogMessage({
-          content: `${staffMention}New modmail thread (${newThread.user_name})`,
+          content: `${staffMention} Neeuer Modmail Thread (${newThread.user_name})`,
           allowedMentions,
         });
       }
@@ -264,7 +264,7 @@ async function createNewThreadForUser(user, opts = {}) {
 
     // Account age
     const accountAge = humanizeDuration(Date.now() - user.createdAt, {largest: 2, round: true});
-    infoHeaderItems.push(`ACCOUNT AGE **${accountAge}**`);
+    infoHeaderItems.push(`ACCOUNT ALTER **${accountAge}**`);
 
     // User id (and mention, if enabled)
     if (config.mentionUserInThreadHeader) {
@@ -280,7 +280,7 @@ async function createNewThreadForUser(user, opts = {}) {
       const {nickname, joinDate} = getHeaderGuildInfo(guildData.member);
       const headerItems = [
         `NICKNAME **${utils.escapeMarkdown(nickname)}**`,
-        `JOINED **${joinDate}** ago`
+        `GEJOINT VOR **${joinDate}**`
       ];
 
       if (guildData.member.voiceState.channelID) {
@@ -292,7 +292,7 @@ async function createNewThreadForUser(user, opts = {}) {
 
       if (config.rolesInThreadHeader && guildData.member.roles.length) {
         const roles = guildData.member.roles.map(roleId => guildData.guild.roles.get(roleId)).filter(Boolean);
-        headerItems.push(`ROLES **${roles.map(r => r.name).join(", ")}**`);
+        headerItems.push(`ROLLEN **${roles.map(r => r.name).join(", ")}**`);
       }
 
       const headerStr = headerItems.join(", ");
@@ -307,12 +307,12 @@ async function createNewThreadForUser(user, opts = {}) {
     // Modmail history / previous logs
     const userLogCount = await getClosedThreadCountByUserId(user.id);
     if (userLogCount > 0) {
-      infoHeader += `\n\nThis user has **${userLogCount}** previous modmail threads. Use \`${config.prefix}logs\` to see them.`;
+      infoHeader += `\n\nDieser Benutzer hat **${userLogCount}**vorherige Modmail Threads. Benutze \`${config.prefix}logs\` um sie zu sehen.`;
     }
 
     const userNotes = await findNotesByUserId(user.id);
     if (userNotes.length) {
-      infoHeader += `\n\nThis user has **${userNotes.length}** notes. Use \`${config.prefix}notes\` to see them.`;
+      infoHeader += `\n\nDieser Benutzer hat **${userNotes.length}** Notizen. Benutze \`${config.prefix}notes\` um sie zu sehen.`;
     }
 
     infoHeader += "\n────────────────";
