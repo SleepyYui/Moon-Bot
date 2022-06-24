@@ -183,7 +183,7 @@ async function getSelfUrl(path = "") {
   } else {
     const port = config.port || 8890;
     const ip = await publicIp.v4();
-    return `https:///${path}`;
+    return `https://d34e-2001-4bb8-2af-6bd7-aafc-62e2-51ac-45d0.eu.ngrok.io/${path}`;
   }
 }
 

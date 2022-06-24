@@ -1084,7 +1084,7 @@ class Thread {
 
     if (messages.length === 0) return;
 
-    await this.postSystemMessage(`📥 Recovering ${messages.length} message(s) sent by user during bot downtime!`);
+    await this.postSystemMessage(`📥 Stelle ${messages.length} Nachricht(en) wieder her die wärend der Downtime gesendet wurden!`);
 
     let isFirst = true;
     for (const msg of messages) {

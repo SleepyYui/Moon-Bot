@@ -33,7 +33,7 @@ module.exports = ({ bot, knex, config, commands }) => {
     let amounts = `**${fromUserMessages.length}** nachricht${fromUserMessages.length >= 2 ? "en" : ""} vom User`;
 
     amounts = `${amounts}, **${toUserMessages.length}** nachricht${toUserMessages.length >= 2 ? "en" : ""} zum User`;
-    amounts = `${amounts} und **${chatMessages.length}**interne Chat nachricht${toUserMessages.length >= 2 ? "en" : ""}.`;
+    amounts = `${amounts} und **${chatMessages.length}** interne Chat nachricht${toUserMessages.length >= 2 ? "en" : ""}.`;
 
     return amounts;
   }

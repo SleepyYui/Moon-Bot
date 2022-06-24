@@ -253,7 +253,7 @@ async function createNewThreadForUser(user, opts = {}) {
           : utils.getInboxMentionAllowedMentions();
 
         await newThread.postNonLogMessage({
-          content: `${staffMention} Neeuer Modmail Thread (${newThread.user_name})`,
+          content: `${staffMention} Neuer Modmail Thread (${newThread.user_name})`,
           allowedMentions,
         });
       }
@@ -280,19 +280,19 @@ async function createNewThreadForUser(user, opts = {}) {
       const {nickname, joinDate} = getHeaderGuildInfo(guildData.member);
       const headerItems = [
         `Nickname: **${utils.escapeMarkdown(nickname)}**`,
-        `Gejoint vor: **${joinDate}**`
+        `\nGejoint vor: **${joinDate}**`
       ];
 
       if (guildData.member.voiceState.channelID) {
         const voiceChannel = guildData.guild.channels.get(guildData.member.voiceState.channelID);
         if (voiceChannel) {
-          headerItems.push(`Voice Channel **${utils.escapeMarkdown(voiceChannel.name)}**`);
+          headerItems.push(`\nVoice Channel **${utils.escapeMarkdown(voiceChannel.name)}**`);
         }
       }
 
       if (config.rolesInThreadHeader && guildData.member.roles.length) {
         const roles = guildData.member.roles.map(roleId => guildData.guild.roles.get(roleId)).filter(Boolean);
-        headerItems.push(`Rollen: **${roles.map(r => r.name).join(", ")}**`);
+        headerItems.push(`\n\nRollen:\n**${roles.map(r => r.name).join("\n")}**`);
       }
 
       const headerStr = headerItems.join(", ");
