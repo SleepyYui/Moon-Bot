@@ -10,6 +10,9 @@ from discord.ext.commands import MemberNotFound
 from discord.ext.commands import MissingPermissions
 from decouple import config
 import cogs.status_rewards.statusmain as statusmain
+import cogs.activity_rewards.activitymain as activitymain
+from datetime import timedelta
+import asyncio
 
 intents = discord.Intents().all()
 client = commands.Bot(intents=intents)
@@ -19,10 +22,22 @@ client.remove_command('help')
 @client.event
 async def on_ready():
     print("Bot is online")
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="in meine DMs"), status=discord.Status.online)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="auf Status & DMs"), status=discord.Status.online)
     client.start_time = datetime.now()
     statussnd = statusmain.statusmain(client)
     statussnd.check_roles.start()
+
+    hour = 15
+    minute = 5
+    #await self.client.wait_until_ready()
+    now = datetime.now()
+    future = datetime(now.year, now.month, now.day, hour, minute)
+    if now.hour >= hour and now.minute > minute:
+        future += timedelta(days=1)
+    print(f"set_activity_zero loop starting in {(future-now).seconds} seconds")
+    await asyncio.sleep((future-now).seconds)
+    activitynd = activitymain.activitymain(client)
+    activitynd.set_activity_zero.start()
 
 @client.event
 async def on_command_error(ctx, error):

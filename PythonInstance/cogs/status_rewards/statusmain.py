@@ -55,16 +55,16 @@ class statusmain(commands.Cog):
             user = guild.get_member(user)
             status = self.get_status(user)
             if status != None:
-                print(status)
+                #print(status)
                 if ".gg/moonfamily" not in status.lower():
                     await user.remove_roles(role)
             else:
                 await user.remove_roles(role)
-        print(f"Checked roles at {datetime.now()}")
+        print(f"Checked status roles at {datetime.now()}")
 
-    @tasks.loop(seconds=1800)
+    """@tasks.loop(seconds=1800)
     async def check_offline_roles(self):
-        obooster = self.get_obooster()
+        obooster = self.get_obooster()"""
 
     @commands.slash_command(name="check_status", description="Überprüfe, ob ein User \"discord.gg/moonfamily\" im Status hat.")
     async def checksbooster(self, ctx, member : discord.Member = None):
@@ -116,36 +116,36 @@ class statusmain(commands.Cog):
 
 
     def get_booster(self):
-        with open('status_boosters.json', 'r') as f:
+        with open('./json_files/status_boosters.json', 'r') as f:
             boosters = json.load(f)
         return boosters
 
     def add_booster(self, booster):
-        with open('status_boosters.json', 'r') as f:
+        with open('./json_files/status_boosters.json', 'r') as f:
             boosters = json.load(f)
         boosters.append(booster)
-        with open('status_boosters.json', 'w') as f:
+        with open('./json_files/status_boosters.json', 'w') as f:
             json.dump(boosters, f)
 
     def remove_booster(self, booster):
-        with open('status_boosters.json', 'r') as f:
+        with open('./json_files/status_boosters.json', 'r') as f:
             boosters = json.load(f)
         boosters.remove(booster)
-        with open('status_boosters.json', 'w') as f:
+        with open('./json_files/status_boosters.json', 'w') as f:
             json.dump(boosters, f)
 
     def add_obooster(self, booster):
-        with open('status_oboosters.json', 'r') as f:
+        with open('./json_files/status_oboosters.json', 'r') as f:
             boosters = json.load(f)
         boosters.append(booster)
-        with open('status_oboosters.json', 'w') as f:
+        with open('./json_files/status_oboosters.json', 'w') as f:
             json.dump(boosters, f)
 
     def remove_obooster(self, booster):
-        with open('status_oboosters.json', 'r') as f:
+        with open('./json_files/status_oboosters.json', 'r') as f:
             boosters = json.load(f)
         boosters.remove(booster)
-        with open('status_oboosters.json', 'w') as f:
+        with open('./json_files/status_oboosters.json', 'w') as f:
             json.dump(boosters, f)
 
 def setup(client):
