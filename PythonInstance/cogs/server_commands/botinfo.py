@@ -50,10 +50,10 @@ class botinfo(commands.Cog):
         days, hours = divmod(hours, 24)
 
         fields = [
-            ("Bot Version:", "0.1.2", True),
+            ("Bot Version:", "0.2.0", True),
             ("Discord-API Version:", python_version(), True),
             ("Py-Cord Version:", discord_version, False),
-            ("Uptime:", f"Der Bot ist online seit **{days} Tagen**, **{hours} Stunden** und **{minutes} Minuten** und **{seconds} Sekunden**", False),
+            ("Uptime:", f"Der Bot ist online seit **{days} Tagen**, **{hours} Stunden**, **{minutes} Minuten** und **{seconds} Sekunden**", False),
             ("Ping:", f'Pong\nLatenz: **{self.client.latency*1000:,.0f}ms**', False),
             ("CPU Modell:", processor, False),
             ("CPU Benuzung:", f"{cpuusage}%", True),

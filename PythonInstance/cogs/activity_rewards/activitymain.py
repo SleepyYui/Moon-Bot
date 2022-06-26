@@ -12,6 +12,7 @@ import asyncio
 rolelist = [953778432813187123, 632674518317531137]
 arole = int(config('AROLE'))
 guildid = int(config('SGUILD'))
+achannel = int(config('ACHANNEL'))
 
 
 async def get_user_activity():
@@ -67,7 +68,7 @@ class activitymain(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.slash_command(name="check_messages", description="Wie viele Nachrichten hat der User heute gesendet?")
+    @commands.slash_command(name="daily", description="Wie viele Nachrichten hat der User heute gesendet?")
     async def checksbooster(self, ctx, member : discord.Member = None):
         if member is None:
             member = ctx.author
@@ -78,31 +79,40 @@ class activitymain(commands.Cog):
             messages = usac[str(user.id)]["messages"]
         except:
             messages = 0
-        if messages > 1 or messages == 0:
-            await ctx.respond(f"{member.name} hat heute {messages} Nachrichten gesendet.")
+        if member == ctx.author:
+            if messages >= 30:
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> Du hast heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> Du hast deine tägliches mindestziel ***erreicht***! <:minecraft_cake:989670170928762921>")
+            else:
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> Du hast heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> Du hast deine tägliches mindestziel __noch nicht__ erreicht! <a:rainbowbunny:985294876105130025>")
         else:
-            await ctx.respond(f"{member.name} hat heute {messages} Nachricht gesendet.")
+            if messages >= 30:
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> {member.nick} hat heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> {member.nick} hat das tägliche mindestziel ***erreicht***! <:minecraft_cake:989670170928762921>")
+            else:
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> {member.nick} hat heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> {member.nick} hat das tägliche mindestziel __noch nicht__ erreicht! <a:rainbowbunny:985294876105130025>")
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if not message.author.bot:# and message.channel.id in [903714957923864588]:
-            guild = self.client.get_guild(guildid)
-            member = guild.get_member(message.author.id)
-            time = calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 5
-            usac = await get_user_activity()
-            try:
-                timestamp = usac[str(member.id)]["timestamp"]
-            except:
-                timestamp = 0
-            role = guild.get_role(arole)
-            if timestamp <= time:
-                await update_user_activity(member)
-                if not role in member.roles:
-                    usac = await get_user_activity()
-                    if usac[str(member.id)]["messages"] >= 30:
-                        await member.add_roles(role)
+        if not message.author.bot and int(message.channel.id) == int(achannel):
+            if not "<@443769343138856961>" in message.content and not "<@!443769343138856961>" in message.content:
+                guild = self.client.get_guild(guildid)
+                member = guild.get_member(message.author.id)
+                time = calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 5
+                usac = await get_user_activity()
+                try:
+                    timestamp = usac[str(member.id)]["timestamp"]
+                except:
+                    timestamp = 0
+                role = guild.get_role(arole)
+                if timestamp <= time:
+                    await update_user_activity(member)
+                    if not role in member.roles:
+                        usac = await get_user_activity()
+                        if usac[str(member.id)]["messages"] >= 30:
+                            await member.add_roles(role)
+                else:
+                    return
             else:
-                return
+                await message.channel.send("Ping den doch nicht <:sip:985295434635415622>", reference=message)
 
 #    @commands.Cog.listener()
 #    async def on_ready(self):
