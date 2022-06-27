@@ -81,14 +81,14 @@ class activitymain(commands.Cog):
             messages = 0
         if member == ctx.author:
             if messages >= 30:
-                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> Du hast heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> Du hast deine tägliches mindestziel ***erreicht***! <:minecraft_cake:989670170928762921>")
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> Du hast heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> Du hast dein tägliches mindestziel ***erreicht***! <:minecraft_cake:989670170928762921>")
             else:
-                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> Du hast heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> Du hast deine tägliches mindestziel __noch nicht__ erreicht! <a:rainbowbunny:985294876105130025>")
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> Du hast heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> Du hast dein tägliches mindestziel __noch nicht__ erreicht! <a:rainbowbunny:985294876105130025>")
         else:
             if messages >= 30:
-                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> {member.nick} hat heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> {member.nick} hat das tägliche mindestziel ***erreicht***! <:minecraft_cake:989670170928762921>")
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> {member.display_name} hat heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> {member.display_name} hat das tägliche mindestziel ***erreicht***! <:minecraft_cake:989670170928762921>")
             else:
-                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> {member.nick} hat heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> {member.nick} hat das tägliche mindestziel __noch nicht__ erreicht! <a:rainbowbunny:985294876105130025>")
+                await ctx.respond(f"<:DailyReward:990693035543265290> __**Tägliche Belohnung**__ <:DailyReward:990693035543265290>\n\n> {member.display_name} hat heute **{messages}`/`30** *gezählte* Nachrichten in <#{achannel}> geschrieben!\n> \n> {member.display_name} hat das tägliche mindestziel __noch nicht__ erreicht! <a:rainbowbunny:985294876105130025>")
 
     @commands.Cog.listener()
     async def on_message(self, message):

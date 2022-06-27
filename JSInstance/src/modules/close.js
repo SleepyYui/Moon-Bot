@@ -156,9 +156,9 @@ module.exports = ({ bot, knex, config, commands }) => {
 
         let response;
         if (silentClose) {
-          response = `Thread wird in ${utils.humanizeDelay(delay)} leise geschlossen. Benutze \`${config.prefix}close cancel\` um den schließvorgang abzubrechen.`;
+          response = `Thread wird in **${utils.humanizeDelay(delay)}** leise geschlossen. Benutze \`${config.prefix}close cancel\` um den schließvorgang abzubrechen.`;
         } else {
-          response = `Thread wird in ${utils.humanizeDelay(delay)}geschlossen. Benutze \`${config.prefix}close cancel\` um den schließvorgang abzubrechen.`;
+          response = `Thread wird in **${utils.humanizeDelay(delay)}** geschlossen. Benutze \`${config.prefix}close cancel\` um den schließvorgang abzubrechen.`;
         }
 
         thread.postSystemMessage(response);
