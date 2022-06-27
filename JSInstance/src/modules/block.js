@@ -12,7 +12,7 @@ module.exports = ({ bot, knex, config, commands }) => {
     for (const userId of expiredBlocks) {
       await blocked.unblock(userId);
       logChannel.createMessage({
-        content: `Block of <@!${userId}> (id \`${userId}\`) expired`,
+        content: `Block von <@!${userId}> (id \`${userId}\`) ist abgelaufen.`,
         allowedMentions: {
           users: [userId],
         },
@@ -53,7 +53,7 @@ module.exports = ({ bot, knex, config, commands }) => {
 
     if (expiresAt) {
       const humanized = humanizeDuration(args.blockTime, { largest: 2, round: true });
-      msg.channel.createMessage(`<@${userIdToBlock}> (id \`${userIdToBlock}\`) würde gesperrt für ${humanized}`);
+      msg.channel.createMessage(`<@${userIdToBlock}> (id \`${userIdToBlock}\`) wurde gesperrt für ${humanized}`);
 
       const timedBlockMessage = config.timedBlockMessage || config.blockMessage;
       if (timedBlockMessage) {

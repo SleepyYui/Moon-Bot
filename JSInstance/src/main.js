@@ -199,7 +199,7 @@ function initBaseMessageHandlers() {
               const postToThreadChannel = config.showResponseMessageInThreadChannel;
               await thread.sendSystemMessageToUser(responseMessage, { postToThreadChannel });
             } catch (err) {
-              await thread.postSystemMessage(`**NOTE:** Could not send auto-response to the user. The error given was: \`${err.message}\``);
+              await thread.postSystemMessage(`**ACHTUNG:** Automatische Antwort konnte nicht an den Benutzer gesendet werden. Der angegebene Fehler war: \`${err.message}\``);
             }
           }
         }
@@ -233,7 +233,7 @@ function initBaseMessageHandlers() {
     const newContent = msg.content;
 
     if (threadMessage.isFromUser()) {
-      const editMessage = utils.disableLinkPreviews(`**The user edited their message:**\n\`B:\` ${oldContent}\n\`A:\` ${newContent}`);
+      const editMessage = utils.disableLinkPreviews(`**Der User hat seine Nachricht bearbeitet:**\n\`V:\` ${oldContent}\n\`N:\` ${newContent}`);
 
       if (config.updateMessagesLive) {
         // When directly updating the message in the staff view, we still want to keep the original content in the logs.
@@ -311,9 +311,9 @@ function initBaseMessageHandlers() {
     const messageLink = `https:\/\/discord.com\/channels\/${channel.guild.id}\/${channel.id}\/${msg.id}`;
 
     if (mainGuilds.length === 1) {
-        content = `${staffMention}Bot mentioned in ${channel.mention} by ${userMentionStr}: "${msg.cleanContent}"\n\n<${messageLink}>`;
+        content = `Bot erwähnt in ${channel.mention} von ${userMentionStr}: "${msg.cleanContent}"\n\n<${messageLink}>`;
     } else {
-        content = `${staffMention}Bot mentioned in ${channel.mention} (${channel.guild.name}) by ${userMentionStr}: "${msg.cleanContent}"\n\n<${messageLink}>`;
+        content = `Bot erwähnt in ${channel.mention} (${channel.guild.name}) von ${userMentionStr}: "${msg.cleanContent}"\n\n<${messageLink}>`;
     }
 
     bot.createMessage(utils.getLogChannel().id, {
@@ -338,7 +338,7 @@ function initBaseMessageHandlers() {
       if (! existingThread) {
         // Only open a thread if we don't already have one
         const createdThread = await threads.createNewThreadForUser(msg.author, { quiet: true });
-        await createdThread.postSystemMessage(`This thread was opened from a bot mention in <#${channel.id}>`);
+        await createdThread.postSystemMessage(`Dieser Thread wurde durch einen Bot-Ping in <#${channel.id}> geöffnet`);
         await createdThread.receiveUserReply(msg);
       }
     }
