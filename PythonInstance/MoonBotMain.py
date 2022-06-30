@@ -27,8 +27,8 @@ async def on_ready():
     statussnd = statusmain.statusmain(client)
     statussnd.check_roles.start()
 
-    hour = 23
-    minute = 59
+    hour = 15
+    minute = 18
     #await self.client.wait_until_ready()
     now = datetime.now()
     future = datetime(now.year, now.month, now.day, hour, minute)

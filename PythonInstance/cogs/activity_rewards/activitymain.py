@@ -13,10 +13,14 @@ rolelist = [953778432813187123, 632674518317531137]
 arole = int(config('AROLE'))
 guildid = int(config('SGUILD'))
 achannel = int(config('ACHANNEL'))
+with open('activityname.json', 'r', encoding='utf-8') as f:
+    jsonname = json.load(f)
+    global json_name
+    json_name = jsonname[0]
 
 
 async def get_user_activity():
-        with open("json_files/activity.json", "r") as f:
+        with open(f'json_files/activities/{json_name}.json', 'r', encoding='utf-8') as f:
             user_activity = json.load(f)
         return user_activity
 
@@ -38,7 +42,7 @@ async def new_user_activity(member):
             user_activity[str(user.id)] = {}
             user_activity[str(user.id)]["messages"] = 0
             user_activity[str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
-        file = open('json_files/activity.json', 'w', encoding='utf-8')
+        file = open(f'json_files/activities/{json_name}.json', 'w', encoding='utf-8')
         file.write(json.dumps(user_activity, indent=4))
         file.close()
 
@@ -59,7 +63,7 @@ async def update_user_activity(member):
             user_activity = users_activity[str(user)]
     users_activity[str(user)]["messages"] += 1
     users_activity[str(user)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
-    with open('json_files/activity.json', 'w', encoding='utf-8') as f:
+    with open(f'json_files/activities/{json_name}.json', 'w', encoding='utf-8') as f:
         json.dump(users_activity, f)
     return True
 
@@ -118,10 +122,17 @@ class activitymain(commands.Cog):
 #    async def on_ready(self):
 #        self.before_set_activity_zero.start(self)
 
-    @tasks.loop(hours=24)
+    @tasks.loop(seconds=24)
     async def set_activity_zero(self):
-        with open('json_files/activity.json' ,'w') as f:
+        print(str(json_name))
+        timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+        njsonname = timestamp / 86400
+        njsonname = str(round(njsonname))
+        with open('activityname.json' ,'w', encoding='utf-8') as f:
+            f.write(f"[\"d{njsonname}-activity\"]")
+        with open(f"json_files/activities/d{njsonname}-activity.json",'w') as f:
             f.write("{}")
+        json_name = njsonname
         guild = self.client.get_guild(guildid)
         role = guild.get_role(arole)
         for member in role.members:
