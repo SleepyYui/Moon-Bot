@@ -13,6 +13,8 @@ import cogs.status_rewards.statusmain as statusmain
 import cogs.activity_rewards.activitymain as activitymain
 from datetime import timedelta
 import asyncio
+import schedule
+import backup
 
 intents = discord.Intents().all()
 client = commands.Bot(intents=intents)
@@ -27,8 +29,8 @@ async def on_ready():
     statussnd = statusmain.statusmain(client)
     statussnd.check_roles.start()
 
-    hour = 15
-    minute = 18
+    hour = 13
+    minute = 45
     #await self.client.wait_until_ready()
     now = datetime.now()
     future = datetime(now.year, now.month, now.day, hour, minute)
@@ -38,6 +40,8 @@ async def on_ready():
     await asyncio.sleep((future-now).seconds)
     activitynd = activitymain.activitymain(client)
     activitynd.set_activity_zero.start()
+    schedule.every().day.at("00:00").do(backup.backthisup, "json_files", "../activity_backups")
+    print("Backing up at 00:00")
 
 @client.event
 async def on_command_error(ctx, error):

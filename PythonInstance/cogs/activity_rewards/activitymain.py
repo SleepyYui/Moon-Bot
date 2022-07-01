@@ -13,21 +13,20 @@ rolelist = [953778432813187123, 632674518317531137]
 arole = int(config('AROLE'))
 guildid = int(config('SGUILD'))
 achannel = int(config('ACHANNEL'))
-with open('activityname.json', 'r', encoding='utf-8') as f:
-    jsonname = json.load(f)
-    global json_name
-    json_name = jsonname[0]
 
 
 async def get_user_activity():
-        with open(f'json_files/activities/{json_name}.json', 'r', encoding='utf-8') as f:
+        with open(f'json_files/activities/activity.json', 'r', encoding='utf-8') as f:
             user_activity = json.load(f)
         return user_activity
 
 async def check_user_activity(member):
     user = member
     user_activity = await get_user_activity()
-    if str(user.id) in user_activity:
+    timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+    njsonname = timestamp / 864#00
+    njsonname = str(round(njsonname))
+    if str(user.id) in user_activity[njsonname]:
         return False
     else:
         return True
@@ -35,35 +34,47 @@ async def check_user_activity(member):
 async def new_user_activity(member):
         user = member
         user_activity = await get_user_activity()
+        timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+        njsonname = timestamp / 864#00
+        njsonname = str(round(njsonname))
 
-        if str(user.id) in user_activity:
-            return False
-        else:
-            user_activity[str(user.id)] = {}
-            user_activity[str(user.id)]["messages"] = 0
-            user_activity[str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
-        file = open(f'json_files/activities/{json_name}.json', 'w', encoding='utf-8')
+        #try:
+        if True:
+            if str(user.id) in user_activity[njsonname]:
+                return False
+            else:
+                user_activity[njsonname][str(user.id)] = {}
+                user_activity[njsonname][str(user.id)]["messages"] = 0
+                user_activity[njsonname][str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+        """except:
+            user_activity[njsonname][str(user.id)] = {}
+            user_activity[njsonname][str(user.id)]["messages"] = 0
+            user_activity[njsonname][str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())"""
+        file = open(f'json_files/activities/activity.json', 'w', encoding='utf-8')
         file.write(json.dumps(user_activity, indent=4))
         file.close()
 
         return True
 
 async def update_user_activity(member):
+    timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+    njsonname = timestamp / 864#00
+    njsonname = str(round(njsonname))
     try:
         user = member.id
     except:
         user = member
     users_activity = await get_user_activity()
     try:
-        user_activity = users_activity[str(user)]
+        user_activity = users_activity[njsonname][str(user)]
     except:
         usr = await new_user_activity(member)
         users_activity = await get_user_activity()
         if usr is False:
-            user_activity = users_activity[str(user)]
-    users_activity[str(user)]["messages"] += 1
-    users_activity[str(user)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
-    with open(f'json_files/activities/{json_name}.json', 'w', encoding='utf-8') as f:
+            user_activity = users_activity[njsonname][str(user)]
+    users_activity[njsonname][str(user)]["messages"] += 1
+    users_activity[njsonname][str(user)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+    with open(f'json_files/activities/activity.json', 'w', encoding='utf-8') as f:
         json.dump(users_activity, f)
     return True
 
@@ -98,12 +109,15 @@ class activitymain(commands.Cog):
     async def on_message(self, message):
         if not message.author.bot and int(message.channel.id) == int(achannel):
             if not "<@443769343138856961>" in message.content and not "<@!443769343138856961>" in message.content:
+                timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+                njsonname = timestamp / 864#00
+                njsonname = str(round(njsonname))
                 guild = self.client.get_guild(guildid)
                 member = guild.get_member(message.author.id)
                 time = calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 5
                 usac = await get_user_activity()
                 try:
-                    timestamp = usac[str(member.id)]["timestamp"]
+                    timestamp = usac[njsonname][str(member.id)]["timestamp"]
                 except:
                     timestamp = 0
                 role = guild.get_role(arole)
@@ -111,7 +125,7 @@ class activitymain(commands.Cog):
                     await update_user_activity(member)
                     if not role in member.roles:
                         usac = await get_user_activity()
-                        if usac[str(member.id)]["messages"] >= 30:
+                        if usac[njsonname][str(member.id)]["messages"] >= 30:
                             await member.add_roles(role)
                 else:
                     return
@@ -124,14 +138,13 @@ class activitymain(commands.Cog):
 
     @tasks.loop(seconds=24)
     async def set_activity_zero(self):
-        print(str(json_name))
-        timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
-        njsonname = timestamp / 86400
-        njsonname = str(round(njsonname))
-        with open('activityname.json' ,'w', encoding='utf-8') as f:
-            f.write(f"[\"d{njsonname}-activity\"]")
-        with open(f"json_files/activities/d{njsonname}-activity.json",'w') as f:
-            f.write("{}")
+        njsonname = {datetime.datetime.now().strftime("%m%d")}
+        print(njsonname[0])
+        with open(f"json_files/activities/activity.json",'w') as f:
+            content = json.load(f)
+        content[njsonname] = {}
+        with open(f'json_files/activities/activity.json', 'w', encoding='utf-8') as f:
+            json.dump(content, f)
         json_name = njsonname
         guild = self.client.get_guild(guildid)
         role = guild.get_role(arole)
