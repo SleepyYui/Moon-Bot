@@ -34,8 +34,8 @@ async def on_ready():
     schedule.every().day.at("00:00").do(backup.backthisup, "json_files", "../activity_backups")
     print("Backing up at 00:00")
 
-    """hour = 15
-    minute = 42
+    """hour = 23
+    minute = 59
     #await self.client.wait_until_ready()
     now = datetime.now()
     future = datetime(now.year, now.month, now.day, hour, minute)
