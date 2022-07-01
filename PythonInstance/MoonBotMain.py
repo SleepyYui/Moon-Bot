@@ -15,6 +15,7 @@ from datetime import timedelta
 import asyncio
 import schedule
 import backup
+from discord_together import DiscordTogether
 
 intents = discord.Intents().all()
 client = commands.Bot(intents=intents)
@@ -23,6 +24,7 @@ client.remove_command('help')
 
 @client.event
 async def on_ready():
+    client.togetherControl = await DiscordTogether(config('TOKEN'))
     print("Bot is online")
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="auf Status & DMs"), status=discord.Status.online)
     client.start_time = datetime.now()
