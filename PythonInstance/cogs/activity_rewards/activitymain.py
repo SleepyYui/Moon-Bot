@@ -72,7 +72,8 @@ async def update_user_activity(member):
         user = member
     users_activity = await get_user_activity()
     try:
-        print(users_activity[njsonname][str(user)])
+        #print(users_activity[njsonname][str(user)])
+        tmp = users_activity[njsonname][str(user)]
     except:
         usr = await new_user_activity(member)
         users_activity = await get_user_activity()
@@ -138,68 +139,74 @@ class activitymain(commands.Cog):
                 member = guild.get_member(message.author.id)
                 time = calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 5
                 usac = await get_user_activity()
+                await update_user_activity(member)
+
+
                 try:
                     timestamp = usac[njsonname][str(member.id)]["timestamp"]
                 except:
                     timestamp = 0
                 if timestamp <= time:
-                    await update_user_activity(member)
 
-                    if usac[njsonname][str(member.id)]["messages"] >= 30:
+                    try:
 
-                        streak = 0
-                        for day in reversed(sorted(usac.keys())):
-                            if usac[day][str(member.id)]["messages"] >= 30:
-                                streak += 1
+                        if usac[njsonname][str(member.id)]["messages"] >= 30:
 
-                        if streak > 98:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  15. Rolle
-                        elif streak >= 91:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  14. Rolle
-                        elif streak >= 84:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  13. Rolle
-                        elif streak >= 77:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  12. Rolle
-                        elif streak >= 70:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  11. Rolle
-                        elif streak >= 63:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  10. Rolle
-                        elif streak >= 56:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  9. Rolle
-                        elif streak >= 49:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  8. Rolle
-                        elif streak >= 42:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  7. Rolle
-                        elif streak >= 35:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  6. Rolle
-                        elif streak >= 28:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  5. Rolle
-                        elif streak >= 21:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  4. Rolle
-                        elif streak >= 14:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  3. Rolle
-                        elif streak >= 7:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  2. Rolle
-                        elif streak >= 3:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  1. Rolle
-                        else:
-                            role = guild.get_role(arole)
-                            await member.add_roles(role) #  0. Rolle
+                            streak = 0
+                            for day in reversed(sorted(usac.keys())):
+                                if usac[day][str(member.id)]["messages"] >= 30:
+                                    streak += 1
+                            #streak = 70
+                            if streak > 98:
+                                role = guild.get_role(992023763736596510)
+                                await member.add_roles(role) #  15. Rolle
+                            elif streak >= 91:
+                                role = guild.get_role(992023763736596510)
+                                await member.add_roles(role) #  14. Rolle
+                            elif streak >= 84:
+                                role = guild.get_role(992023768220311564)
+                                await member.add_roles(role) #  13. Rolle
+                            elif streak >= 77:
+                                role = guild.get_role(992023759722651718)
+                                await member.add_roles(role) #  12. Rolle
+                            elif streak >= 70:
+                                role = guild.get_role(992023735706079332)
+                                await member.add_roles(role) #  11. Rolle
+                            elif streak >= 63:
+                                role = guild.get_role(992023730723246231)
+                                await member.add_roles(role) #  10. Rolle
+                            elif streak >= 56:
+                                role = guild.get_role(992023747622076486)
+                                await member.add_roles(role) #  9. Rolle
+                            elif streak >= 49:
+                                role = guild.get_role(992023743738155038)
+                                await member.add_roles(role) #  8. Rolle
+                            elif streak >= 42:
+                                role = guild.get_role(992023739946512424)
+                                await member.add_roles(role) #  7. Rolle
+                            elif streak >= 35:
+                                role = guild.get_role(992023755444465685)
+                                await member.add_roles(role) #  6. Rolle
+                            elif streak >= 28:
+                                role = guild.get_role(992023751615074334)
+                                await member.add_roles(role) #  5. Rolle
+                            elif streak >= 21:
+                                role = guild.get_role(992023772058095677)
+                                await member.add_roles(role) #  4. Rolle
+                            elif streak >= 14:
+                                role = guild.get_role(992023776323710988)
+                                await member.add_roles(role) #  3. Rolle
+                            elif streak >= 7:
+                                role = guild.get_role(992023780694183967)
+                                await member.add_roles(role) #  2. Rolle
+                            elif streak >= 3:
+                                role = guild.get_role(992023711479775332)
+                                await member.add_roles(role) #  1. Rolle
+                            else:
+                                role = guild.get_role(990650138273923113)
+                                await member.add_roles(role) #  0. Rolle
+                    except:
+                        pass
 
 
                     """if not role1 in member.roles:
@@ -243,7 +250,7 @@ class activitymain(commands.Cog):
         with open(f'json_files/activities/activity.json', 'w', encoding='utf-8') as f:
             json.dump(content, f)
         guild = self.client.get_guild(guildid)
-        for roleid in []:
+        for roleid in [990650138273923113, 992023711479775332, 992023780694183967, 992023776323710988, 992023772058095677, 992023751615074334, 992023755444465685, 992023739946512424, 992023743738155038, 992023747622076486, 992023730723246231, 992023735706079332, 992023759722651718, 992023768220311564, 992023763736596510]:
             role = guild.get_role(roleid)
             for member in role.members:
                 await member.remove_roles(role)
