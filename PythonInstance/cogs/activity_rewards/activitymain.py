@@ -161,7 +161,7 @@ class activitymain(commands.Cog):
                                 if usac[day][str(member.id)]["messages"] >= 30:
                                     streak += 1
 
-                            print(streak)
+                            #print(streak)
 
                             if streak > 98:
                                 role = guild.get_role(992023763736596510)
