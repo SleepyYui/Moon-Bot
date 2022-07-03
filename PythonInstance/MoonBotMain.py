@@ -34,15 +34,17 @@ async def on_ready():
     schedule.every().day.at("00:00").do(backup.backthisup, "json_files", "../activity_backups")
     print("Backing up at 00:00")
 
-    """hour = 23
+    hour = 23
     minute = 59
+    seconds = 59
     #await self.client.wait_until_ready()
     now = datetime.now()
     future = datetime(now.year, now.month, now.day, hour, minute)
     if now.hour >= hour and now.minute > minute:
         future += timedelta(days=1)
-    print(f"set_activity_zero loop starting in {(future-now).seconds} seconds")
-    await asyncio.sleep((future-now).seconds)"""
+    total_seconds = (future-now).seconds + seconds
+    print(f"set_activity_zero loop starting in {total_seconds} seconds")
+    await asyncio.sleep(total_seconds)
     activitynd = activitymain.activitymain(client)
     activitynd.set_activity_zero.start()
 

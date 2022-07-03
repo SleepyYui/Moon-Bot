@@ -225,7 +225,7 @@ class activitymain(commands.Cog):
 #    async def on_ready(self):
 #        self.before_set_activity_zero.start(self)
 
-    @tasks.loop(seconds=24)
+    @tasks.loop(hours=24)
     async def set_activity_zero(self):
         njsonname = {datetime.datetime.now().strftime("%y%m%d")}
         for i in njsonname:

@@ -11,7 +11,7 @@ const GIT_DIR = path.join(__dirname, "..", "..", ".git");
 
 module.exports = ({ bot, knex, config, commands }) => {
   commands.addInboxServerCommand("version", [], async (msg, args, thread) => {
-    let response = `YuMail ${getPrettyVersion()}`;
+    let response = `YuMail Version: ${getPrettyVersion()}`;
 
     utils.postSystemMessageWithFallback(msg.channel, thread, response);
   });
