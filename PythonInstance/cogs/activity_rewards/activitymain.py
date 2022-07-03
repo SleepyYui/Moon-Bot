@@ -96,8 +96,12 @@ class activitymain(commands.Cog):
         #member = ctx.guild.get_member(int(member.id))
         user = member
         usac = await get_user_activity()
+        njsonname = {datetime.datetime.now().strftime("%y%m%d")}
+        for i in njsonname:
+            njsonname = i
+            break
         try:
-            messages = usac[str(user.id)]["messages"]
+            messages = usac[njsonname][str(user.id)]["messages"]
         except:
             messages = 0
 
