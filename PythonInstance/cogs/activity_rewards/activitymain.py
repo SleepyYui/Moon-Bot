@@ -156,7 +156,9 @@ class activitymain(commands.Cog):
                             for day in reversed(sorted(usac.keys())):
                                 if usac[day][str(member.id)]["messages"] >= 30:
                                     streak += 1
-                            #streak = 70
+
+                            print(streak)
+
                             if streak > 98:
                                 role = guild.get_role(992023763736596510)
                                 await member.add_roles(role) #  15. Rolle

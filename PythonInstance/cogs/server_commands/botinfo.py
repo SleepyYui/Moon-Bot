@@ -50,7 +50,7 @@ class botinfo(commands.Cog):
         days, hours = divmod(hours, 24)
 
         fields = [
-            ("Bot Version:", "0.3.1", True),
+            ("Bot Version:", "0.3.2", True),
             ("Discord-API Version:", python_version(), True),
             ("Py-Cord Version:", discord_version, False),
             ("Uptime:", f"Der Bot ist online seit **{days} Tagen**, **{hours} Stunden**, **{minutes} Minuten** und **{seconds} Sekunden**", False),
