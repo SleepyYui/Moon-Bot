@@ -42,6 +42,19 @@ async def new_user_activity(member):
         #print(type(user_activity))
         #print(user_activity)
 
+        try:
+            tmp = user_activity[njsonname]
+        except:
+            user_activity[njsonname] = {}
+            user_activity[njsonname][str(user.id)] = {}
+            user_activity[njsonname][str(user.id)]["messages"] = 0
+            user_activity[njsonname][str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+            file = open(f'json_files/activities/activity.json', 'w', encoding='utf-8')
+            file.write(json.dumps(user_activity, indent=4))
+            file.close()
+
+            return False
+
         #try:
         if True:
             useract = user_activity[njsonname]
@@ -142,8 +155,9 @@ class activitymain(commands.Cog):
                 guild = self.client.get_guild(guildid)
                 member = guild.get_member(message.author.id)
                 time = calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 5
-                usac = await get_user_activity()
                 await update_user_activity(member)
+                usac = await get_user_activity()
+                
 
 
                 try:
@@ -152,14 +166,20 @@ class activitymain(commands.Cog):
                     timestamp = 0
                 if timestamp <= time:
 
-                    try:
+                    #try:
+                    if True:
 
                         if usac[njsonname][str(member.id)]["messages"] >= 30:
 
                             streak = 0
                             for day in reversed(sorted(usac.keys())):
-                                if usac[day][str(member.id)]["messages"] >= 30:
-                                    streak += 1
+                                try:
+                                    if usac[day][str(member.id)]["messages"] >= 30:
+                                        streak += 1
+                                    else:
+                                        break
+                                except:
+                                    break
 
                             #print(streak)
 
@@ -211,8 +231,8 @@ class activitymain(commands.Cog):
                             else:
                                 role = guild.get_role(990650138273923113)
                                 await member.add_roles(role) #  0. Rolle
-                    except:
-                        pass
+                    #except:
+                    #    pass
 
 
                     """if not role1 in member.roles:
@@ -240,8 +260,8 @@ class activitymain(commands.Cog):
         njsonname = str(njsonname)
         with open(f"json_files/activities/activity.json",'r') as f:
             content = json.load(f)
-        try:
-        #if True:
+        #try:
+        if True:
             #print(content)
             #print(type(content))
             try:
@@ -249,8 +269,8 @@ class activitymain(commands.Cog):
             except:
                 content[njsonname] = {}
 
-        except:
-            print("Brok?")#content[njsonname] = {"0": {"messages": 0, "timestamp": 0}}
+        #except:
+        #    print("Brok?")#content[njsonname] = {"0": {"messages": 0, "timestamp": 0}}
         #print(content)
         #print("EEEEEE")
         with open(f'json_files/activities/activity.json', 'w', encoding='utf-8') as f:
