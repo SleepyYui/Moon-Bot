@@ -8,10 +8,6 @@ import datetime
 from datetime import timedelta
 import asyncio
 
-async def get_user_activity():
-        with open(f'json_files/activities/activity.json', 'r', encoding='utf-8') as f:
-            user_activity = json.load(f)
-        return user_activity
 
 class hexconsole(commands.Cog):
 
