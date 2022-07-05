@@ -118,13 +118,15 @@ class activitymain(commands.Cog):
         except:
             messages = 0
 
-        try:
-            streak = 0
-            for day in reversed(sorted(usac.keys())):
+        streak = 0
+        for day in reversed(sorted(usac.keys())):
+            try:
                 if usac[day][str(member.id)]["messages"] >= 30:
                     streak += 1
-        except:
-            streak = 0
+                else:
+                    break
+            except:
+                break
 
         if streak > 0:
             addition = f"\nDu hast seit **{streak} Tagen** jeden Tag über 30 Nachrichten geschrieben. <:stonks:913416125201670154>"
@@ -155,21 +157,29 @@ class activitymain(commands.Cog):
                 guild = self.client.get_guild(guildid)
                 member = guild.get_member(message.author.id)
                 time = calendar.timegm(datetime.datetime.utcnow().utctimetuple()) - 5
+                ousac = await get_user_activity()
                 await update_user_activity(member)
                 usac = await get_user_activity()
                 
 
-
+                #print("gmsg")
                 try:
-                    timestamp = usac[njsonname][str(member.id)]["timestamp"]
+                    timestamp = ousac[njsonname][str(member.id)]["timestamp"]
+                    #print("gmsg1 T")
                 except:
                     timestamp = 0
-                if timestamp <= time:
+                    #print("gmsg1 F")
+                #print("gmsg2")
+                #print(str(time))
+                #print(timestamp)
+                if int(timestamp) <= int(time):
 
+                    #print("gmsg3 T")
                     #try:
                     if True:
 
                         if usac[njsonname][str(member.id)]["messages"] >= 30:
+                            #print("check1")
 
                             streak = 0
                             for day in reversed(sorted(usac.keys())):
@@ -229,6 +239,7 @@ class activitymain(commands.Cog):
                                 role = guild.get_role(992023711479775332)
                                 await member.add_roles(role) #  1. Rolle
                             else:
+                                print("arole0")
                                 role = guild.get_role(990650138273923113)
                                 await member.add_roles(role) #  0. Rolle
                     #except:
