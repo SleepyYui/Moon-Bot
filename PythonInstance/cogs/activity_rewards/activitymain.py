@@ -50,7 +50,7 @@ async def new_user_activity(member):
             user_activity[njsonname][str(user.id)]["messages"] = 0
             user_activity[njsonname][str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
             file = open(f'json_files/activities/activity.json', 'w', encoding='utf-8')
-            file.write(json.dumps(user_activity, indent=4))
+            file.write(json.dumps(user_activity, indent=4, sort_keys=True))
             file.close()
 
             return False
@@ -69,7 +69,7 @@ async def new_user_activity(member):
             user_activity[njsonname][str(user.id)]["messages"] = 0
             user_activity[njsonname][str(user.id)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())"""
         file = open(f'json_files/activities/activity.json', 'w', encoding='utf-8')
-        file.write(json.dumps(user_activity, indent=4))
+        file.write(json.dumps(user_activity, indent=4, sort_keys=True))
         file.close()
 
         return True
@@ -93,8 +93,9 @@ async def update_user_activity(member):
 
     users_activity[njsonname][str(user)]["messages"] += 1
     users_activity[njsonname][str(user)]["timestamp"] = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
-    with open(f'json_files/activities/activity.json', 'w', encoding='utf-8') as f:
-        json.dump(users_activity, f)
+    file = open(f'json_files/activities/activity.json', 'w', encoding='utf-8')
+    file.write(json.dumps(users_activity, indent=4, sort_keys=True))
+    file.close()
     return True
 
 class activitymain(commands.Cog):

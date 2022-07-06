@@ -26,7 +26,7 @@ class hexconsole(commands.Cog):
                     user_activity = json.load(f)
                 user_activity[str(day)][str(userid)]["messages"] = int(messages)
                 file = open(f'json_files/activities/activity.json', 'w', encoding='utf-8')
-                file.write(json.dumps(user_activity, indent=4))
+                file.write(json.dumps(user_activity, indent=4, sort_keys=True))
                 file.close()
                 await ctx.send("Fertig", delete_after=5)
             except:
