@@ -18,7 +18,7 @@ import backup
 from discord_together import DiscordTogether
 
 intents = discord.Intents().all()
-client = commands.Bot(intents=intents)
+client = commands.Bot(command_prefix="mb.", intents=intents)
 client.remove_command('help')
 
 
