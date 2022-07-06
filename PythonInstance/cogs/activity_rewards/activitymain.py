@@ -239,7 +239,7 @@ class activitymain(commands.Cog):
                                 role = guild.get_role(992023711479775332)
                                 await member.add_roles(role) #  1. Rolle
                             else:
-                                print("arole0")
+                                #print("arole0")
                                 role = guild.get_role(990650138273923113)
                                 await member.add_roles(role) #  0. Rolle
                     #except:
