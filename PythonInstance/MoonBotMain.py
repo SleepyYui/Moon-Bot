@@ -93,7 +93,7 @@ for directory in os.listdir('./cogs'):
             if filename.endswith(".py"):
                 if filename != 'importantfunctions.py':
                     initial_extensions.append("cogs." + directory + '.' + filename[:-3])
-                    print(directory + "/" + filename[:-3] + ".py was loaded successfully")
+                    print(directory + "/" + filename[:-3] + " was loaded successfully")
 
 
 if __name__ == '__main__':
